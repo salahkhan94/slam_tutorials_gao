@@ -11,7 +11,7 @@ using namespace std;
 int main( int argc, char** argv )
 {
     // Rotation matrix rotated 90 degrees along the Z axis
-    Own :: Matrix3d ​​R = Own :: AngleAxisd (M_PI / 2, Own :: Vector3d (0,0,1)) toRotationMatrix ();
+    Eigen::Matrix3d R = Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d(0,0,1)).toRotationMatrix();
     
     Sophus::SO3 SO3_R(R); // Sophus::SO(3) can be constructed directly from the rotation matrix
     Sophus::SO3 SO3_v( 0, 0, M_PI/2 ); // can also be constructed from a rotation vector
@@ -29,7 +29,7 @@ int main( int argc, char** argv )
     // hat is vector to antisymmetric matrix
     cout<<"so3 hat=\n"<<Sophus::SO3::hat(so3)<<endl;
     // Relative, vee is the objection vector
-    Cout<<"so3 hat vee= "<<Sophus::SO3::vee( Sophus::SO3::hat(so3) ).transpose()<<endl; // transpose is purely for the sake of output
+    cout<<"so3 hat vee= "<<Sophus::SO3::vee( Sophus::SO3::hat(so3) ).transpose()<<endl; // transpose is purely for the sake of output
     
     // Update of the incremental disturbance model
     Eigen::Vector3d update_so3(1e-4, 0, 0); //assuming the update is so much
@@ -37,7 +37,7 @@ int main( int argc, char** argv )
     cout<<"SO3 updated = "<<SO3_updated<<endl;
     
     /******************** Meng Meng's dividing line ************************** *****/
-    Cout<<"************ I am the dividing line *************"<<endl;
+    cout<<"************ I am the dividing line *************"<<endl;
     // The operation of SE(3) is similar
     Eigen::Vector3d t(1,0,0); // translate 1 along the X axis
     Sophus::SE3 SE3_Rt(R, t); // Construct SE(3) from R, t
