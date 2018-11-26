@@ -17,7 +17,7 @@ class CurveFittingVertex: public g2o::BaseVertex<3, Eigen::Vector3d>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    Virtual void setToOriginImpl() // reset
+    virtual void setToOriginImpl() // reset
     {
         _estimate << 0,0,0;
     }
@@ -47,16 +47,16 @@ public:
     virtual bool read( istream& in ) {}
     virtual bool write( ostream& out ) const {}
 public:
-    Double _x; // x value, y value is _measurement
+    double _x; // x value, y value is _measurement
 };
 
 int main( int argc, char** argv )
 {
-    Double a=1.0, b=2.0, c=1.0; // true parameter value
-    Int N=100; // data point
-    Double w_sigma=1.0; // noise Sigma value
-    Cv::RNG rng; // OpenCV random number generator
-    Double abc[3] = {0,0,0}; // estimate of the abc parameter
+    double a=1.0, b=2.0, c=1.0; // true parameter value
+    int N=100; // data point
+    double w_sigma=1.0; // noise Sigma value
+    cv::RNG rng; // OpenCV random number generator
+    double abc[3] = {0,0,0}; // estimate of the abc parameter
 
     vector<double> x_data, y_data;      // 数据
     
@@ -72,20 +72,20 @@ int main( int argc, char** argv )
     }
     
     // Build graph optimization, first set g2o
-    Typedef g2o::BlockSolver< g2o::BlockSolverTraits<3,1> > Block; // Each error term has an optimized variable dimension of 3 and an error value dimension of 1
+    typedef g2o::BlockSolver< g2o::BlockSolverTraits<3,1> > Block; // Each error term has an optimized variable dimension of 3 and an error value dimension of 1
     Block::LinearSolverType* linearSolver = new g2o::LinearSolverDense<Block::PoseMatrixType>(); // Linear Equation Solver
     Block* solver_ptr = new Block( linearSolver ); // matrix block solver
     // Gradient descent method, choose from GN, LM, DogLeg
     g2o::OptimizationAlgorithmLevenberg* solver = new g2o::OptimizationAlgorithmLevenberg( solver_ptr );
     // g2o::OptimizationAlgorithmGaussNewton* solver = new g2o::OptimizationAlgorithmGaussNewton( solver_ptr );
     // g2o::OptimizationAlgorithmDogleg* solver = new g2o::OptimizationAlgorithmDogleg( solver_ptr );
-    G2o::SparseOptimizer optimizer; // graph model
+    g2o::SparseOptimizer optimizer; // graph model
     optimizer.setAlgorithm( solver ); // Set the solver
     optimizer.setVerbose( true ); // Turn on debug output
     
     // Add vertices to the graph
     CurveFittingVertex* v = new CurveFittingVertex();
-    v-> setEstimate (Eigen :: Vector3d (0.0,0));
+    v->setEstimate( Eigen::Vector3d(0,0,0) );
     v-> setId (0);
     optimizer.addVertex( v );
     
@@ -94,9 +94,9 @@ int main( int argc, char** argv )
     {
         CurveFittingEdge* edge = new CurveFittingEdge( x_data[i] );
         edge->setId(i);
-        Edge->setVertex( 0, v ); // Set the vertices of the connection
-        Edge->setMeasurement( y_data[i] ); // Observe the value
-        Edge->setInformation( Eigen::Matrix<double,1,1>::Identity()*1/(w_sigma*w_sigma) ); // Information matrix: the inverse of the covariance matrix
+        edge->setVertex( 0, v ); // Set the vertices of the connection
+        edge->setMeasurement( y_data[i] ); // Observe the value
+        edge->setInformation( Eigen::Matrix<double,1,1>::Identity()*1/(w_sigma*w_sigma) ); // Information matrix: the inverse of the covariance matrix
         optimizer.addEdge( edge );
     }
     
