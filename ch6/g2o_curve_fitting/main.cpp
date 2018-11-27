@@ -84,11 +84,11 @@ int main( int argc, char** argv )
     optimizer.setVerbose( true ); // Turn on debug output
     
     // Add vertices to the graph
-    CurveFittingVertex* v = new CurveFittingVertex();
+   CurveFittingVertex* v = new CurveFittingVertex();
     v->setEstimate( Eigen::Vector3d(0,0,0) );
     v-> setId (0);
     optimizer.addVertex( v );
-    
+     
     // Add a side to the picture
     for ( int i=0; i<N; i++ )
     {
@@ -104,7 +104,7 @@ int main( int argc, char** argv )
     cout<<"start optimization"<<endl;
     chrono::steady_clock::time_point t1 = chrono::steady_clock::now();
     optimizer.initializeOptimization();
-    optimizer.optimize(100);
+    optimizer.optimize(200);
     chrono::steady_clock::time_point t2 = chrono::steady_clock::now();
     chrono::duration<double> time_used = chrono::duration_cast<chrono::duration<double>>( t2-t1 );
     cout<<"solve time cost = "<<time_used.count()<<" seconds. "<<endl;
