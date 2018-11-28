@@ -36,7 +36,7 @@ int main ( int argc, char** argv )
 
     Mat outimg1;
     drawKeypoints( img_1, keypoints_1, outimg1, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
-    Imshow("ORB feature point", outimg1);
+    imshow("ORB feature point", outimg1);
 
     //-- Step 3: Match the BRIEF descriptors in the two images, using the Hamming distance
     vector<DMatch> matches;
@@ -46,7 +46,7 @@ int main ( int argc, char** argv )
     //-- Step 4: Match point pair screening
     double min_dist=10000, max_dist=0;
 
-    / / Find the minimum distance and maximum distance between all matches, that is, the distance between the most similar and least similar two sets of points
+    // Find the minimum distance and maximum distance between all matches, that is, the distance between the most similar and least similar two sets of points
     for ( int i = 0; i < descriptors_1.rows; i++ )
     {
         double dist = matches[i].distance;
@@ -76,8 +76,8 @@ int main ( int argc, char** argv )
     Mat img_goodmatch;
     drawMatches ( img_1, keypoints_1, img_2, keypoints_2, matches, img_match );
     drawMatches ( img_1, keypoints_1, img_2, keypoints_2, good_matches, img_goodmatch );
-    Imshow ("all matching point pairs", img_match );
-    Imshow ("Optimized match point pair", img_goodmatch);
+    imshow ("all matching point pairs", img_match );
+    imshow ("Optimized match point pair", img_goodmatch);
     waitKey(0);
 
     return 0;
