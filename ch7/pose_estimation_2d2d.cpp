@@ -7,7 +7,7 @@
 using namespace std;
 using namespace cv;
 
-// This program demonstrates how to estimate camera motion using 2D-2D feature matching.
+// lnaThis program demonstrates how to estimate camera motion using 2D-2D feature matching.
 
 void find_feature_matches (
     const Mat& img_1, const Mat& img_2,
