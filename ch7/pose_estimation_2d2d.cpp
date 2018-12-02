@@ -7,7 +7,7 @@
 using namespace std;
 using namespace cv;
 
-// lnaThis program demonstrates how to estimate camera motion using 2D-2D feature matching.
+//This program demonstrates how to estimate camera motion using 2D-2D feature matching.
 
 void find_feature_matches (
     const Mat& img_1, const Mat& img_2,
@@ -39,7 +39,10 @@ int main ( int argc, char** argv )
     vector<DMatch> matches;
     find_feature_matches ( img_1, img_2, keypoints_1, keypoints_2, matches );
     cout<<"一共找到了"<<matches.size() <<"组匹配点"<<endl;
-
+    Mat img_match;
+    drawMatches ( img_1, keypoints_1, img_2, keypoints_2, matches, img_match );
+    imshow ("all matching point pairs", img_match );
+    waitKey(0);
     //-- Estimate motion between two images
     Mat R,t;
     pose_estimation_2d2d ( keypoints_1, keypoints_2, matches, R, t );
@@ -152,7 +155,7 @@ void pose_estimation_2d2d ( std::vector<KeyPoint> keypoints_1,
     fundamental_matrix = findFundamentalMat ( points1, points2, CV_FM_8POINT );
     cout<<"fundamental_matrix is "<<endl<< fundamental_matrix<<endl;
 
-    //-- Computational matrix
+    //-- Essential matrix
     Point2d principal_point ( 325.1, 249.7 );	//相机光心, TUM dataset标定值
     double focal_length = 521;			//相机焦距, TUM dataset标定值
     Mat essential_matrix;
