@@ -37,7 +37,7 @@ int main ( int argc, char** argv )
     vector<KeyPoint> keypoints_1, keypoints_2;
     vector<DMatch> matches;
     find_feature_matches ( img_1, img_2, keypoints_1, keypoints_2, matches );
-    cout<<"一共找到了"<<matches.size() <<"组匹配点"<<endl;
+    cout<<"一共找到了 Great"<<matches.size() <<"组匹配点"<<endl;
     Mat img_match;
     drawMatches ( img_1, keypoints_1, img_2, keypoints_2, matches, img_match );
     imshow ("all matching point pairs", img_match );
@@ -155,8 +155,8 @@ void pose_estimation_2d2d ( std::vector<KeyPoint> keypoints_1,
     cout<<"fundamental_matrix is "<<endl<< fundamental_matrix<<endl;
 
     //-- Essential matrix
-    Point2d principal_point ( 325.1, 249.7 );	//相机光心, TUM dataset标定值
-    double focal_length = 521;			//相机焦距, TUM dataset标定值
+    Point2d principal_point ( 325.1, 249.7 );	//TUM Datasets
+    double focal_length = 521;			//TUM Datasets
     Mat essential_matrix;
     essential_matrix = findEssentialMat ( points1, points2, focal_length, principal_point );
     cout<<"essential_matrix is "<<endl<< essential_matrix<<endl;
