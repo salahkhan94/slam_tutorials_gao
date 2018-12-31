@@ -66,7 +66,7 @@ int main ( int argc, char** argv )
         cout << "epipolar constraint = " << d << endl;
     }
     return 0;
-}
+ }
 
 void find_feature_matches ( const Mat& img_1, const Mat& img_2,
                             std::vector<KeyPoint>& keypoints_1,

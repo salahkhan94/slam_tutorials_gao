@@ -46,7 +46,7 @@ int main ( int argc, char** argv )
     vector<KeyPoint> keypoints_1, keypoints_2;
     vector<DMatch> matches;
     find_feature_matches ( img_1, img_2, keypoints_1, keypoints_2, matches );
-    Cout<<" found a total of "<<matches.size() <<"group matching points"<<endl;
+    cout<<" found a total of "<<matches.size() <<"group matching points"<<endl;
 
     // Create 3D points
     Mat d1 = imread ( argv[3], CV_LOAD_IMAGE_UNCHANGED ); // depth map is 16-bit unsigned number, single-channel image
@@ -69,7 +69,7 @@ int main ( int argc, char** argv )
     Mat r, t;
     solvePnP ( pts_3d, pts_2d, K, Mat(), r, t, false ); // Call OpenCV's PnP solution, select EPNP, DLS, etc.
     Mat R;
-    Cv::Rodrigues ( r, R ); // r is a rotation vector form, converted to a matrix using the Rodrigues formula
+    cv::Rodrigues ( r, R ); // r is a rotation vector form, converted to a matrix using the Rodrigues formula
 
     cout<<"R="<<endl<<R<<endl;
     cout<<"t="<<endl<<t<<endl;
@@ -77,6 +77,7 @@ int main ( int argc, char** argv )
     cout<<"calling bundle adjustment"<<endl;
 
     bundleAdjustment ( pts_3d, pts_2d, K, R, t );
+
 }
 
 void find_feature_matches ( const Mat& img_1, const Mat& img_2,
@@ -109,7 +110,7 @@ void find_feature_matches ( const Mat& img_1, const Mat& img_2,
     //-- Step 4: Match point pair screening
     double min_dist=10000, max_dist=0;
 
-    / / Find the minimum distance and maximum distance between all matches, that is, the distance between the most similar and least similar two sets of points
+    // Find the minimum distance and maximum distance between all matches, that is, the distance between the most similar and least similar two sets of points
     for ( int i = 0; i < descriptors_1.rows; i++ )
     {
         double dist = match[i].distance;
@@ -146,7 +147,7 @@ void bundleAdjustment (
     Mat& R, Mat& t )
 {
     // initialize g2o
-    Typedef g2o::BlockSolver< g2o::BlockSolverTraits<6,3> > Block; // pose dimension is 6, landmark dimension is 3
+    typedef g2o::BlockSolver< g2o::BlockSolverTraits<6,3> > Block; // pose dimension is 6, landmark dimension is 3
     Block::LinearSolverType* linearSolver = new g2o::LinearSolverCSparse<Block::PoseMatrixType>(); // Linear Equation Solver
     Block* solver_ptr = new Block ( linearSolver ); // matrix block solver
     g2o::OptimizationAlgorithmLevenberg* solver = new g2o::OptimizationAlgorithmLevenberg ( solver_ptr );
@@ -155,13 +156,13 @@ void bundleAdjustment (
 
     // vertex
     g2o::VertexSE3Expmap* pose = new g2o::VertexSE3Expmap(); // camera pose
-    Own :: Matrix3d ​​R_mat;
+    Eigen::Matrix3d ​​R_mat;
     R_mat <<
           R.at<double> ( 0,0 ), R.at<double> ( 0,1 ), R.at<double> ( 0,2 ),
                R.at<double> ( 1,0 ), R.at<double> ( 1,1 ), R.at<double> ( 1,2 ),
                R.at<double> ( 2,0 ), R.at<double> ( 2,1 ), R.at<double> ( 2,2 );
     pose->setId ( 0 );
-    pose-> setEstimate (g2o :: SE3Quat (
+    pose->setEstimate ( g2o::SE3Quat (
                             R_mat,
                             Eigen::Vector3d ( t.at<double> ( 0,0 ), t.at<double> ( 1,0 ), t.at<double> ( 2,0 ) )
                         ) );
@@ -173,7 +174,7 @@ void bundleAdjustment (
         g2o::VertexSBAPointXYZ* point = new g2o::VertexSBAPointXYZ();
         point->setId ( index++ );
         point->setEstimate ( Eigen::Vector3d ( p.x, p.y, p.z ) );
-        Point->setMarginalized ( true ); // must be set in g2o. See the tenth article
+        point->setMarginalized ( true ); // must be set in g2o. See the tenth article
         optimizer.addVertex ( point );
     }
 
