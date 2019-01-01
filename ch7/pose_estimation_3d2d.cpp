@@ -152,7 +152,7 @@ void bundleAdjustment (
     Block* solver_ptr = new Block ( linearSolver ); // matrix block solver
     g2o::OptimizationAlgorithmLevenberg* solver = new g2o::OptimizationAlgorithmLevenberg ( solver_ptr );
     g2o::SparseOptimizer optimizer;
-    optimizer.setAlgorithm ( solver );
+    optimizer.setAlgorithm (solver);
 
     // vertex
     g2o::VertexSE3Expmap* pose = new g2o::VertexSE3Expmap(); // camera pose
