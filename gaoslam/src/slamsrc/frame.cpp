@@ -17,7 +17,7 @@
  *
  */
 
-#include "myslam/frame.h"
+#include "gaoslam/frame.h"
 
 namespace myslam
 {

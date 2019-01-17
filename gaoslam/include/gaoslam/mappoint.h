@@ -20,7 +20,7 @@
 #ifndef MAPPOINT_H
 #define MAPPOINT_H
 
-#include "myslam/common_include.h"
+#include "gaoslam/common_include.h"
 
 namespace myslam
 {

@@ -20,8 +20,8 @@
 #ifndef VISUALODOMETRY_H
 #define VISUALODOMETRY_H
 
-#include "myslam/common_include.h"
-#include "myslam/map.h"
+#include "gaoslam/common_include.h"
+#include "gaoslam/map.h"
 
 #include <opencv2/features2d/features2d.hpp>
 

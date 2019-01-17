@@ -20,8 +20,8 @@
 #ifndef FRAME_H
 #define FRAME_H
 
-#include "myslam/common_include.h"
-#include "myslam/camera.h"
+#include "gaoslam/common_include.h"
+#include "gaoslam/camera.h"
 
 namespace myslam 
 {

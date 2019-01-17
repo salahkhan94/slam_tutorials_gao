@@ -6,12 +6,12 @@
 #include <opencv2/viz.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <ros/ros.h>
-#include "myslam/config.h"
-#include "myslam/visual_odometry.h"
+#include "gaoslam/config.h"
+#include "gaoslam/visual_odometry.h"
 
 int main ( int argc, char** argv )
 {
-    ros::init(argc, argv, "salslam");
+    ros::init(argc, argv, "gaoslam");
     if ( argc != 2 )
     {
         cout<<"usage: run_vo parameter_file"<<endl;

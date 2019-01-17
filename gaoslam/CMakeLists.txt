@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 2.8)
-project(salSLAM)
+cmake_minimum_required(VERSION 2.8.3)
+project(gaoslam)
 
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 #set( CMAKE_CXX_COMPILER "g++" )

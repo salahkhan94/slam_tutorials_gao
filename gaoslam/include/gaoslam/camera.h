@@ -20,7 +20,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "myslam/common_include.h"
+#include "gaoslam/common_include.h"
 
 namespace myslam
 {

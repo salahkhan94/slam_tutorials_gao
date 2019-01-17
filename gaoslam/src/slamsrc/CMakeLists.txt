@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
-project( salSLAM )
+project( gaoslam )
 
-add_library( myslam SHARED
+add_library( gaoslam SHARED
     frame.cpp
     mappoint.cpp
     map.cpp
@@ -11,6 +11,6 @@ add_library( myslam SHARED
     visual_odometry.cpp
 )
 
-target_link_libraries( myslam
+target_link_libraries( gaoslam
     ${THIRD_PARTY_LIBS}
 )

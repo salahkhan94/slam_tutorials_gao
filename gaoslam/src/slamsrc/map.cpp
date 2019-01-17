@@ -17,33 +17,35 @@
  *
  */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#include "gaoslam/map.h"
 
-#include "myslam/common_include.h" 
+namespace myslam
+{
 
-namespace myslam 
+void Map::insertKeyFrame ( Frame::Ptr frame )
 {
-class Config
-{
-private:
-    static std::shared_ptr<Config> config_; 
-    cv::FileStorage file_;
-    
-    Config () {} // private constructor makes a singleton
-public:
-    ~Config();  // close the file when deconstructing 
-    
-    // set a new config file 
-    static void setParameterFile( const std::string& filename ); 
-    
-    // access the parameter values
-    template< typename T >
-    static T get( const std::string& key )
+    cout<<"Key frame size = "<<keyframes_.size()<<endl;
+    if ( keyframes_.find(frame->id_) == keyframes_.end() )
     {
-        return T( Config::config_->file_[key] );
+        keyframes_.insert( make_pair(frame->id_, frame) );
     }
-};
+    else
+    {
+        keyframes_[ frame->id_ ] = frame;
+    }
 }
 
-#endif // CONFIG_H
+void Map::insertMapPoint ( MapPoint::Ptr map_point )
+{
+    if ( map_points_.find(map_point->id_) == map_points_.end() )
+    {
+        map_points_.insert( make_pair(map_point->id_, map_point) );
+    }
+    else 
+    {
+        map_points_[map_point->id_] = map_point;
+    }
+}
+
+
+}

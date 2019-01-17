@@ -23,9 +23,9 @@
 #include <algorithm>
 #include <boost/timer.hpp>
 
-#include "myslam/config.h"
-#include "myslam/visual_odometry.h"
-#include "myslam/g2o_types.h"
+#include "gaoslam/config.h"
+#include "gaoslam/visual_odometry.h"
+#include "gaoslam/g2o_types.h"
 
 namespace myslam
 {

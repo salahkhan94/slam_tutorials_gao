@@ -17,8 +17,8 @@
  *
  */
 
-#include "myslam/camera.h"
-#include <myslam/config.h>
+#include "gaoslam/camera.h"
+#include <gaoslam/config.h>
 
 namespace myslam
 {
