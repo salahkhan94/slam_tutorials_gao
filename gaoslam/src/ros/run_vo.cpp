@@ -1,4 +1,3 @@
-// -------------- test the visual odometry -------------
 #include <fstream>
 #include <boost/timer.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -8,6 +7,102 @@
 #include <ros/ros.h>
 #include "gaoslam/config.h"
 #include "gaoslam/visual_odometry.h"
+#include <cv_bridge/cv_bridge.h>
+
+using namespace std;
+
+class ImageGrabber
+{
+public:
+    ImageGrabber(ORB_SLAM2::System* pSLAM):mpSLAM(pSLAM){}
+
+    void GrabRGBD(const sensor_msgs::ImageConstPtr& msgRGB,const sensor_msgs::ImageConstPtr& msgD);
+
+    ORB_SLAM2::System* mpSLAM;
+};
+
+
+class SubscribeAndPublish
+{
+public:
+  SubscribeAndPublish()
+  {
+    sub1 = n_.subscribe("rgb/camera_info", 5, &SubscribeAndPublish::Callback1, this);
+    sub2 = n_.subscribe("depth/camera_info", 5, &SubscribeAndPublish::Callback2, this);
+    sub3 = n_.subscribe("rgb/image_raw", 5, &SubscribeAndPublish::Callback3, this);
+    sub4 = n_.subscribe("depth/image_raw", 5, &SubscribeAndPublish::Callback4, this);
+  }
+
+  void Callback1(const sensor_msgs::CameraInfo::ConstPtr& data)
+  {
+    sensor_msgs::CameraInfo im;
+    im.header = data->header;
+    im.header.frame_id = "zed";
+    im.height = data->height;
+    im.width = data->width;
+    im.distortion_model = data->distortion_model;
+    im.D = data->D;
+    im.K = data->K;
+    im.P = data->P;
+    im.binning_x = data->binning_x;
+    im.binning_y = data->binning_y;
+    im.roi = data->roi;
+  }
+
+  void Callback2(const sensor_msgs::CameraInfo::ConstPtr& data)
+  {
+    sensor_msgs::CameraInfo im;
+    im.header = data->header;
+    im.header.frame_id = "zed";
+    im.height = data->height;
+    im.width = data->width;
+    im.distortion_model = data->distortion_model;
+    im.D = data->D;
+    im.K = data->K;
+    im.P = data->P;
+    im.binning_x = data->binning_x;
+    im.binning_y = data->binning_y;
+    im.roi = data->roi;
+    pub2.publish(im);
+  }
+
+  void Callback3(const sensor_msgs::Image::ConstPtr& data)
+  {
+    sensor_msgs::Image im;
+    im.header = data->header;
+    im.header.frame_id = "zed";
+    im.height = data->height;
+    im.width = data->width;
+    im.encoding = data->encoding;
+    im.is_bigendian = data->is_bigendian;
+    im.step = data->step;
+    im.data = data->data;
+    pub3.publish(im);
+  }
+
+  void Callback4(const sensor_msgs::Image::ConstPtr& data)
+  {
+    sensor_msgs::Image im;
+    im.header = data->header;
+    im.header.frame_id = "zed";
+    im.height = data->height;
+    im.width = data->width;
+    im.encoding = data->encoding;
+    im.is_bigendian = data->is_bigendian;
+    im.step = data->step;
+    im.data = data->data;
+    pub4.publish(im);
+  }
+  
+private:
+  ros::NodeHandle n_; 
+  //ros::Publisher pub1,pub2,pub3,pub4;
+  ros::Subscriber sub1,sub2,sub3,sub4;
+  tf::Quaternion q;
+  //std::string indica_link; 
+};
+
+
 
 int main ( int argc, char** argv )
 {
@@ -109,4 +204,31 @@ int main ( int argc, char** argv )
     }
 
     return 0;
+}
+void ImageGrabber::GrabRGBD(const sensor_msgs::ImageConstPtr& msgRGB,const sensor_msgs::ImageConstPtr& msgD)
+{
+    // Copy the ros image message to cv::Mat.
+    cv_bridge::CvImageConstPtr cv_ptrRGB;
+    try
+    {
+        cv_ptrRGB = cv_bridge::toCvShare(msgRGB);
+    }
+    catch (cv_bridge::Exception& e)
+    {
+        ROS_ERROR("cv_bridge exception: %s", e.what());
+        return;
+    }
+
+    cv_bridge::CvImageConstPtr cv_ptrD;
+    try
+    {
+        cv_ptrD = cv_bridge::toCvShare(msgD);
+    }
+    catch (cv_bridge::Exception& e)
+    {
+        ROS_ERROR("cv_bridge exception: %s", e.what());
+        return;
+    }
+
+    mpSLAM->TrackRGBD(cv_ptrRGB->image,cv_ptrD->image,cv_ptrRGB->header.stamp.toSec());
 }
