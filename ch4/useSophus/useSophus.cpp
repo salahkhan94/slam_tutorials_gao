@@ -52,7 +52,7 @@ int main( int argc, char** argv )
     // Same, there are two operators of hat and vee
     cout<<"se3 hat = "<<endl<<Sophus::SE3::hat(se3)<<endl;
     cout<<"se3 hat vee = "<<Sophus::SE3::vee( Sophus::SE3::hat(se3) ).transpose()<<endl;
-    
+
     // Finally, demonstrate the update
     Vector6d update_se3; //update volume
     update_se3.setZero();
